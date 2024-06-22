@@ -77,7 +77,9 @@ app.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
-    res.json({ token });
+    const userName = user.name;
+    
+    res.json({ token, userName });
 
   }
   catch (err) {
@@ -98,7 +100,7 @@ app.post("/books", authenticateTokenMiddleware, upload.single('image'), async (r
         publisher,
         year: parseInt(year),
         pages: parseInt(pages),
-        image: req.file.path // add the path to the uploaded image to the book data
+        image: req.file.path
       },
     });
     res.json({ book });
